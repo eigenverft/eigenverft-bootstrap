@@ -43,6 +43,6 @@ function Get-ScriptfileFromGitHubxx()
 Write-Host "Starting Eigenverft PowerShell updater..."
 Get-ScriptfileFromGitHub
 
-. "$PSScriptRoot\lib.ps1"
+. "$PSScriptRoot\scripts\lib.ps1"
 
 Read-Host "Press Enter to continue..."
