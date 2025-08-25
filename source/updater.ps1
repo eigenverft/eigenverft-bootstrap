@@ -496,10 +496,15 @@ if ($files) {
         } else {
             Write-Host "Update failed; local directory unchanged."
         }
-    } else {
-        Write-Host "Local files are up to date; no action needed."
     }
 }
 
-. "$PSScriptRoot\launcher.ps1"
+
+# Dot-source launcher.ps1 if it exists; otherwise, warn the user.
+$p = Join-Path $PSScriptRoot 'launcher.ps1'
+if (Test-Path -LiteralPath $p -PathType Leaf) {
+    try { . $p } catch { Write-Host "Dot-source failed: $($_.Exception.Message)" -ForegroundColor Red }
+} else {
+    Write-Host "launcher.ps1 not found: $p" -ForegroundColor Yellow
+}
 
