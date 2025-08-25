@@ -76,7 +76,9 @@ jobs:
     - name: Display powershell core version
       run: pwsh --version
 
-    - name: Display windows powershell version
+    - name: Display Windows PowerShell engine version
+      if: runner.os == 'Windows'
+      shell: cmd
       run: powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command "$PSVersionTable.PSVersion.ToString()"
 
     - name: Workflow Build/Deploy
