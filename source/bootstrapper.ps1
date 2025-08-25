@@ -2,6 +2,6 @@
   [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
   $dst = Join-Path $env:LOCALAPPDATA 'Programs\eigenverft\eigenverft-bootstrap\updater.ps1';
   New-Item -ItemType Directory -Path (Split-Path $dst) -Force | Out-Null;
-  $url = 'https://raw.githubusercontent.com/eigenverft/eigenverft-bootstrap/refs/heads/main/updater.ps1';
+  $url = 'https://raw.githubusercontent.com/eigenverft/eigenverft-bootstrap/refs/heads/main/source/updater.ps1';
   Invoke-WebRequest -Uri $url -UseBasicParsing -OutFile $dst;
   Start-Process -FilePath 'powershell.exe' -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File',$dst)
