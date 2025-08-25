@@ -500,6 +500,7 @@ If set, dot-sources the resolved launcher path when Mode is Updated or LocalRun.
 
 # ===== Example usage =====
 Write-Host 'Starting Eigenverft PowerShell updater (atomic with local fallback)...'
+Read-Host 'Press Enter to continue or Ctrl-C to abort.'
 
 $items = @(
     @{ Owner='eigenverft'; Repo='eigenverft-bootstrap'; Path='scripts/lib.ps1' },
