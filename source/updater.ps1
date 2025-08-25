@@ -4,12 +4,10 @@ function Get-GitHubRepoFiles {
 List files/trees from a GitHub repo (optionally a subfolder) via the Trees API.
 
 .DESCRIPTION
-Resolves the ref (or default branch), finds the root tree SHA, optionally descends to -SubPath,
-then fetches that subtree recursively. Returns $null on any web/logic error (e.g., 404, rate limit).
-Each item includes:
-- Path    : repo-style path using '/'
-- PathDS  : native path using the current OS directory separator
-- RawUrlRef / RawUrlPinned : pseudo raw.githubusercontent URLs for blobs
+Resolves the ref (or default branch), optionally walks -SubPath to its subtree SHA,
+then fetches that subtree with ?recursive=1. If GitHub returns "truncated", this
+function returns $null (no partial results, no fallback walking). Raw URLs are
+properly URL-escaped. PS5 + PS Core compatible.
 
 .PARAMETER Owner
 GitHub owner/org (e.g., 'dotnet').
@@ -27,7 +25,7 @@ Optional repo-relative subdirectory. '\' or '/' accepted.
 'blob' (files), 'tree' (directories), or 'all'. Default 'blob'.
 
 .PARAMETER Relative
-If set and -SubPath is given, output paths are relative to SubPath; otherwise to repo root.
+If set with -SubPath, paths are relative to the subfolder; else repo root.
 
 .PARAMETER UserAgent
 User-Agent header; default: 'pwsh-public'.
@@ -39,7 +37,7 @@ GitHub REST API version; default: '2022-11-28'.
 Optional PAT/GITHUB_TOKEN for private repos / higher limits.
 
 .EXAMPLE
-Get-GitHubRepoFiles -Owner eigenverft -Repo eigenverft-bootstrap -SubPath updater
+Get-GitHubRepoFiles -Owner eigenverft -Repo eigenverft-bootstrap -SubPath source -Relative
 #>
     [CmdletBinding()]
     param(
@@ -55,28 +53,33 @@ Get-GitHubRepoFiles -Owner eigenverft -Repo eigenverft-bootstrap -SubPath update
     )
 
     try {
-        # Reviewer note: GitHub requires a UA; versioned Accept is recommended.
+        # Reviewer note: GitHub requires UA; use versioned Accept.
         $headers = @{
             'Accept'               = 'application/vnd.github+json'
             'X-GitHub-Api-Version' = $ApiVersion
         }
         if ($Token) { $headers['Authorization'] = "Bearer $Token" }
 
-        # Resolve default branch only if Ref not provided (saves a call when Ref is set).
+        # Resolve default branch only if needed.
         if (-not $Ref) {
             $repoInfo = Invoke-RestMethod -Uri ("https://api.github.com/repos/{0}/{1}" -f $Owner,$Repo) `
                                           -UserAgent $UserAgent -Headers $headers -ErrorAction Stop
             $Ref = $repoInfo.default_branch
         }
-        $eref = [uri]::EscapeDataString($Ref)
+
+        # URL-escaped owner/repo/ref for raw links.
+        $eOwner = [uri]::EscapeDataString($Owner)
+        $eRepo  = [uri]::EscapeDataString($Repo)
+        $eRef   = [uri]::EscapeDataString($Ref)
 
         # Resolve ref -> commit -> root tree SHA.
+        $eref = [uri]::EscapeDataString($Ref)
         $commit    = Invoke-RestMethod -Uri ("https://api.github.com/repos/{0}/{1}/commits/{2}" -f $Owner,$Repo,$eref) `
                                        -UserAgent $UserAgent -Headers $headers -ErrorAction Stop
         $commitSha = $commit.sha
         $treeSha   = $commit.commit.tree.sha
 
-        # If SubPath is set, walk level-by-level to that subtree SHA.
+        # If SubPath is set, walk level-by-level to that subtree SHA (non-recursive).
         $targetSha = $treeSha
         $prefix = $null
         if ($SubPath) {
@@ -93,14 +96,15 @@ Get-GitHubRepoFiles -Owner eigenverft -Repo eigenverft-bootstrap -SubPath update
             }
         }
 
-        # Fetch subtree recursively (Trees API supports only recursive=1 or none).
+        # Fetch subtree recursively; HARD FAIL on truncation.
         $tree = Invoke-RestMethod -Uri ("https://api.github.com/repos/{0}/{1}/git/trees/{2}?recursive=1" -f $Owner,$Repo,$targetSha) `
                                   -UserAgent $UserAgent -Headers $headers -ErrorAction Stop
         if ($tree.truncated) {
-            Write-Warning "GitHub returned a truncated tree; consider narrowing -SubPath."
+            Write-Verbose "Trees API returned truncated data for SHA $targetSha; failing per design."
+            return $null
         }
 
-        # Filter item type.
+        # Filter type.
         $items = $tree.tree
         switch ($ItemType) {
             'blob' { $items = $items | Where-Object { $_.type -eq 'blob' } }
@@ -108,7 +112,7 @@ Get-GitHubRepoFiles -Owner eigenverft -Repo eigenverft-bootstrap -SubPath update
             'all'  { }
         }
 
-        # Shape output; Path = repo-style ('/'); PathDS = native separator path; add raw links for blobs.
+        # Shape output; escape raw URLs. Keep '/' paths; provide OS-native PathDS.
         $ds = [IO.Path]::DirectorySeparatorChar
         $result = foreach ($it in $items) {
             $p = $it.path
@@ -117,11 +121,13 @@ Get-GitHubRepoFiles -Owner eigenverft -Repo eigenverft-bootstrap -SubPath update
             }
             $native = $p.Replace('/', $ds)
 
-            $rawRef    = $null
+            $rawRef = $null
             $rawPinned = $null
             if ($it.type -eq 'blob') {
-                $rawRef    = "https://raw.githubusercontent.com/$Owner/$Repo/$Ref/$p"
-                $rawPinned = "https://raw.githubusercontent.com/$Owner/$Repo/$commitSha/$p"
+                # Encode each path segment, keep slashes
+                $encPath = (($p -split '/') | ForEach-Object { [uri]::EscapeDataString($_) }) -join '/'
+                $rawRef    = "https://raw.githubusercontent.com/$eOwner/$eRepo/$eRef/$encPath"
+                $rawPinned = "https://raw.githubusercontent.com/$eOwner/$eRepo/$commitSha/$encPath"
             }
 
             [pscustomobject]@{
@@ -143,6 +149,7 @@ Get-GitHubRepoFiles -Owner eigenverft -Repo eigenverft-bootstrap -SubPath update
         return $null
     }
 }
+
 
 function Test-GitHubRepoFilesLocalMatch {
 <#
