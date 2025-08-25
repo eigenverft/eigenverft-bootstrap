@@ -478,24 +478,27 @@ System.Boolean  # $true on complete success; $false and no changes otherwise.
 Write-Host 'Starting Eigenverft updater...'
 
 $files = Get-GitHubRepoFiles -Owner "eigenverft" -Repo "eigenverft-bootstrap" -SubPath "source"
-$final = "$env:LOCALAPPDATA\Programs\eigenverft\eigenverft-bootstrap"
 
-$testResult = Test-GitHubRepoFilesLocalMatch -Items $files -LocalRoot $final
-if (-not $testResult) {
-    Write-Host "Local files are missing or outdated; proceeding with update..."
-    $tmp = Save-GitHubRepoFilesToTemp -Items $files
-    if (-not $tmp)
-    {
-         Write-Host "Download failed.; local directory unchanged.";
-    }
+if ($files) {
+    $final = "$env:LOCALAPPDATA\Programs\eigenverft\eigenverft-bootstrap"
 
-    if (Publish-GitHubRepoFilesFromTemp -Items $files -TempRoot $tmp -FinalRoot $final) {
-        Write-Host "Update installed atomically."
+    $testResult = Test-GitHubRepoFilesLocalMatch -Items $files -LocalRoot $final
+    if (-not $testResult) {
+        Write-Host "Local files are missing or outdated; proceeding with update..."
+        $tmp = Save-GitHubRepoFilesToTemp -Items $files
+        if (-not $tmp)
+        {
+            Write-Host "Download failed.; local directory unchanged.";
+        }
+
+        if (Publish-GitHubRepoFilesFromTemp -Items $files -TempRoot $tmp -FinalRoot $final) {
+            Write-Host "Update installed atomically."
+        } else {
+            Write-Host "Update failed; local directory unchanged."
+        }
     } else {
-        Write-Host "Update failed; local directory unchanged."
+        Write-Host "Local files are up to date; no action needed."
     }
-} else {
-    Write-Host "Local files are up to date; no action needed."
 }
 
 . "$PSScriptRoot\launcher.ps1"
