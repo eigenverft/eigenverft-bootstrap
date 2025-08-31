@@ -312,7 +312,14 @@ System.String (temp directory path) or $null on failure.
             $ok = $false
             for ($i=0; $i -le $RetryCount; $i++) {
                 try {
-                    Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile $out -ErrorAction Stop
+                    $prevProgressPreference = $ProgressPreference
+                    try {
+                        $ProgressPreference = 'SilentlyContinue'
+                        Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile $out -ErrorAction Stop
+                    }
+                    finally {
+                        $ProgressPreference = $prevProgressPreference
+                    }
                     $ok = $true; break
                 } catch {
                     if ($i -lt $RetryCount) { Start-Sleep -Seconds $RetryDelaySec } else { throw }

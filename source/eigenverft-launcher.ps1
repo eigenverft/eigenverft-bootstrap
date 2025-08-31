@@ -19,9 +19,6 @@ if ($osName -notlike 'windows') {
     exit 1
 }
 
-
-Out-Log @Logconfig -Level Information -Template "PWD IS {PWD}" -Params @{ PWD = $PWD }
-
 try {
     $r = Invoke-BuildIfRequired -SourceDir $PSScriptRoot\src -AssemblyName MyApp -ThisVersion 1.2.3.6 -OutPath .\out -Quiet
     & $r.Executable.FullName
@@ -29,13 +26,6 @@ try {
 catch {
     Out-Log @Logconfig -Level Error -Template "Error: @Messsage: {ExceptionMessage} @Script: {ExceptionScriptName} @Line: {ExceptionLineNumber} @At: {ExceptionLine}" -Params @{ ExceptionMessage = $_.Exception.Message; ExceptionScriptName = $_.InvocationInfo.ScriptName ; ExceptionLineNumber = $_.InvocationInfo.ScriptLineNumber ; ExceptionLine = $_.InvocationInfo.Line.Trim() }
 }
-
-# ---- resolve expected EXE path ----
-
-
-#$r = Set-AssemblyVersionAttributes -Path .\source\src -Version 1.2.3.4
-#$artifact = Invoke-CSharpCompilationEx -Source .\source\src -OutputType WindowsApplication -AssemblyName MyApp -OutputPath .\out -Configuration Release -PdbType None
-#& $artifact.Artifact.FullName
 
 Start-Sleep -Milliseconds 500
 #Out-Log @WriteLogInlineDefaultsProgressBar -Level Information -Template "Script execution has started." -InitialWrite
