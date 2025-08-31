@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -13,6 +14,16 @@ namespace Eigenverft.Bootstrapper
 {
     public partial class MainForm : Form
     {
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                const int CS_DROPSHADOW = 0x20000;
+                var cp = base.CreateParams;
+                cp.ClassStyle |= CS_DROPSHADOW;
+                return cp;
+            }
+        }
         private readonly BackgroundWorker _worker;
 
         public MainForm()
@@ -29,7 +40,7 @@ namespace Eigenverft.Bootstrapper
             _worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
             MainPanel.EnableDrag(this.Handle);
             progressBarEx31.EnableDrag(this.Handle);
-
+            transparentLabelEx31.EnableDrag(this.Handle);
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
