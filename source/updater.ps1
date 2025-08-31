@@ -150,7 +150,6 @@ Get-GitHubRepoFiles -Owner eigenverft -Repo eigenverft-bootstrap -SubPath source
     }
 }
 
-
 function Test-GitHubRepoFilesLocalMatch {
 <#
 .SYNOPSIS
@@ -477,7 +476,7 @@ System.Boolean  # $true on complete success; $false and no changes otherwise.
 
 Write-Host 'Starting Eigenverft updater...'
 
-$files = Get-GitHubRepoFiles -Owner "eigenverft" -Repo "eigenverft-bootstrap" -SubPath "source"
+$files = Get-GitHubRepoFiles -Owner "eigenverft" -Repo "eigenverft-bootstrap" -SubPath "source" | Where-Object { $_.Path -notlike 'source/updater.ps1' }
 
 if ($files) {
     $final = "$env:LOCALAPPDATA\Programs\eigenverft\eigenverft-bootstrap"
