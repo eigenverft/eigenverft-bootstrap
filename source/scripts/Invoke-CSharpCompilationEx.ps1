@@ -115,9 +115,9 @@ Invoke-CSharpCompilationEx2 -Source .\source\src -OutputType ConsoleApplication 
                 }
             }
         } else {
-            $matches = @(Get-ChildItem -Path $s -File -ErrorAction SilentlyContinue)
-            if (-not $matches -and $it -and -not $it.PSIsContainer) { $matches = @($it) }
-            foreach ($m in $matches) {
+            $matching = @(Get-ChildItem -Path $s -File -ErrorAction SilentlyContinue)
+            if (-not $matching -and $it -and -not $it.PSIsContainer) { $matching = @($it) }
+            foreach ($m in $matching) {
                 switch -regex ($m.Extension) {
                     '^\.cs$'     { $allFiles.Add($m.FullName); break }
                     '^\.csproj$' { $projFiles.Add($m.FullName); break }
@@ -485,9 +485,9 @@ PSCustomObject with summary fields:
                 if (-not $skip) { $targets.Add($f.FullName) }
             }
         } else {
-            $matches = @(Get-ChildItem -Path $p -File -ErrorAction SilentlyContinue)
-            if (-not $matches -and $it -and -not $it.PSIsContainer) { $matches = @($it) }
-            foreach ($m in $matches) {
+            $matching = @(Get-ChildItem -Path $p -File -ErrorAction SilentlyContinue)
+            if (-not $matching -and $it -and -not $it.PSIsContainer) { $matching = @($it) }
+            foreach ($m in $matching) {
                 if ($m.Extension -ieq '.cs') {
                     $skip = $false
                     foreach ($ex in $Exclude) { if ($m.FullName -like "*${ex}*") { $skip = $true; break } }
