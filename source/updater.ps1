@@ -193,6 +193,7 @@ System.Boolean
         if (-not (Test-Path -LiteralPath $root -PathType Container)) { return $false }
 
         # Helper: compute Git blob OID (SHA-1 or SHA-256) for a given file path.
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseApprovedVerbs','', Justification='Private helper; public API uses approved verbs')]
         function _Get-GitBlobOid([string]$FilePath, [string]$Algo) {
             $fi = [IO.FileInfo]::new($FilePath)
             if (-not $fi.Exists) { return $null }
