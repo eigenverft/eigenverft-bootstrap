@@ -37,11 +37,11 @@ catch {
 #& $artifact.Artifact.FullName
 
 Start-Sleep -Milliseconds 500
-Out-Log @WriteLogInlineDefaultsProgressBar -Level Information -Template "Script execution has started." -InitialWrite
+#Out-Log @WriteLogInlineDefaultsProgressBar -Level Information -Template "Script execution has started." -InitialWrite
 Start-Sleep -Milliseconds 500
-Out-Log  @WriteLogInlineDefaultsProgressBar -Level Information -Template "Script execution has started.."
+#Out-Log  @WriteLogInlineDefaultsProgressBar -Level Information -Template "Script execution has started.."
 Start-Sleep -Milliseconds 500
-Out-Log  @WriteLogInlineDefaultsProgressBar -Level Information -Template "Script execution has started..."
+#Out-Log  @WriteLogInlineDefaultsProgressBar -Level Information -Template "Script execution has started..."
 
 
 Wait-PressKey -Message 'Press any key to continue...'
