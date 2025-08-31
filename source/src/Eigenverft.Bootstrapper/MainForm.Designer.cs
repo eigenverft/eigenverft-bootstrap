@@ -30,7 +30,7 @@
             private void InitializeComponent()
             {
             this.MainPanel = new System.Windows.Forms.Panel();
-            this.transparentLabelEx31 = new AxonInsight.Library.Controls.TransparentLabelEx3();
+            this.transparentLabelEx31 = new Eigenverft.Bootstrapper.TransparentLabelEx3();
             this.progressBarEx31 = new Eigenverft.Bootstrapper.ProgressBarEx3();
             this.MainPanel.SuspendLayout();
             this.SuspendLayout();
@@ -110,7 +110,7 @@
 
             private System.Windows.Forms.Panel MainPanel;
         private ProgressBarEx3 progressBarEx31;
-        private AxonInsight.Library.Controls.TransparentLabelEx3 transparentLabelEx31;
+        private Eigenverft.Bootstrapper.TransparentLabelEx3 transparentLabelEx31;
     }
   
 }
