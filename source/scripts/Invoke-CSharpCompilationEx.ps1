@@ -93,10 +93,6 @@ Invoke-CSharpCompilationEx2 -Source .\source\src -OutputType ConsoleApplication 
         [switch]   $SuppressBuildOutput
     )
 
-    if (-not $IsWindows) {
-        throw "Requires Windows (CLR v4.x MSBuild/csc). On non-Windows, use a .csproj with 'dotnet build/publish'."
-    }
-
     # -------- Collect inputs (.cs / .csproj / .sln)
     $allFiles = New-Object System.Collections.Generic.List[string]
     $projFiles = New-Object System.Collections.Generic.List[string]
