@@ -6,7 +6,7 @@ $WriteLogInlineDefaultsProgressBar = @{
     ReturnJson    = $false
     Endpoint   = 'https://localhost:8080/api/logs'
     ApiKey     = 'your_api_key_here'
-    LogSpace   = 'foo'
+    LogSpace   = 'eigenverft-launcher'
 }
 
 $Logconfig = @{
@@ -19,5 +19,5 @@ $Logconfig = @{
     ReturnJson    = $false
     Endpoint   = 'https://localhost:8080/api/logs'
     ApiKey     = 'your_api_key_here'
-    LogSpace   = 'foo'
+    LogSpace   = 'eigenverft-launcher'
 }

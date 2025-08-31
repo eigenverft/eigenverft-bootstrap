@@ -4,12 +4,11 @@
 . "$PSScriptRoot/scripts/Get-OsName.ps1"
 . "$PSScriptRoot/scripts/Invoke-CSharpCompilationEx.ps1"
 
-. "$PSScriptRoot/launcher.config.ps1"
-
+. "$PSScriptRoot/eigenverft-launcher.config.ps1"
 
 Clear-Host
 
-Out-Log @Logconfig -Level Information -Template "{Name} {State}." -Params @{ Name = 'eigenverft-bootstrappeer'; State = 'started' }
+Out-Log @Logconfig -Level Information -Template "{Name} {State}." -Params @{ Name = 'eigenverft-launcher'; State = 'started' }
 
 $osName = Get-OsName
 
