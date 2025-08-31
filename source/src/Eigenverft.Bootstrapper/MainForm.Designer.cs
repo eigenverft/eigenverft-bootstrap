@@ -29,22 +29,22 @@
             /// </summary>
             private void InitializeComponent()
             {
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.MainPanel = new System.Windows.Forms.Panel();
             this.progressBarEx31 = new Eigenverft.Bootstrapper.ProgressBarEx3();
-            this.panel1.SuspendLayout();
+            this.MainPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
+            // MainPanel
             // 
-            this.panel1.BackgroundImage = global::Eigenverft.Bootstrapper.Properties.Resources.eigenverft_background_part_logo;
-            this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.panel1.Controls.Add(this.progressBarEx31);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(500, 320);
-            this.panel1.TabIndex = 0;
+            this.MainPanel.BackgroundImage = global::Eigenverft.Bootstrapper.Properties.Resources.eigenverft_background_part_logo;
+            this.MainPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.MainPanel.Controls.Add(this.progressBarEx31);
+            this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainPanel.Location = new System.Drawing.Point(0, 0);
+            this.MainPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.MainPanel.Name = "MainPanel";
+            this.MainPanel.Size = new System.Drawing.Size(500, 320);
+            this.MainPanel.TabIndex = 0;
             // 
             // progressBarEx31
             // 
@@ -67,21 +67,24 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(500, 320);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.MainPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "MainForm";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Eigenverft Bootstrapper";
             this.TopMost = true;
             this.Shown += new System.EventHandler(this.MainForm_Shown);
-            this.panel1.ResumeLayout(false);
+            this.MainPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
             }
 
             #endregion
 
-            private System.Windows.Forms.Panel panel1;
+            private System.Windows.Forms.Panel MainPanel;
         private ProgressBarEx3 progressBarEx31;
     }
   

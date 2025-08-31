@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using Eigenverft.Bootstrapper.Extensions;
+
 namespace Eigenverft.Bootstrapper
 {
     public partial class MainForm : Form
@@ -25,6 +27,8 @@ namespace Eigenverft.Bootstrapper
             _worker.DoWork += Worker_DoWork;
             _worker.ProgressChanged += Worker_ProgressChanged;
             _worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
+            MainPanel.EnableDrag(this.Handle);
+            progressBarEx31.EnableDrag(this.Handle);
 
         }
 
