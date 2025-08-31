@@ -22,7 +22,7 @@ if ($osName -notlike 'windows') {
 
 
 try {
-    $r = Invoke-BuildIfRequired -SourceDir .\source\src -AssemblyName MyApp -ThisVersion 1.2.3.6 -OutPath .\out -Quiet
+    $r = Invoke-BuildIfRequired -SourceDir $PWD\source\src -AssemblyName MyApp -ThisVersion 1.2.3.6 -OutPath .\out -Quiet
     & $r.Executable.FullName
 }
 catch {
