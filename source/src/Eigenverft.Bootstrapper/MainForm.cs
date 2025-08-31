@@ -57,7 +57,7 @@ namespace Eigenverft.Bootstrapper
         {
             // Reviewer note: avoid forcing .Update(); just set Value and your custom text.
             progressBarEx31.Value = e.ProgressPercentage;
-            progressBarEx31.CustomText = $"{e.ProgressPercentage}/{progressBarEx31.Maximum}";
+            progressBarEx31.CustomText = e.ProgressPercentage.ToString()+"/"+progressBarEx31.Maximum.ToString();
         }
 
         /// <summary>Closes the form when the work completes (or errors).</summary>
