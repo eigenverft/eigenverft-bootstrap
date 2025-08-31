@@ -19,7 +19,7 @@ if ($osName -notlike 'windows') {
 }
 
 try {
-    $r = Invoke-BuildIfRequired -SourceDir $PSScriptRoot\src -AssemblyName Eigenverft.Bootstrapper -ThisVersion 1.3.0.1 -OutPath .\out -Quiet
+    $r = Invoke-BuildIfRequired -SourceDir $PSScriptRoot\src -AssemblyName Eigenverft.Bootstrapper -ThisVersion 1.3.0.2 -OutPath .\out -Quiet
     & $r.Executable.FullName
 }
 catch {
