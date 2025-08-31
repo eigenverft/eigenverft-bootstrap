@@ -20,6 +20,8 @@ if ($osName -notlike 'windows') {
 }
 
 
+Out-Log @Logconfig -Level Information -Template "PWD IS {PWD}" -Params @{ PWD = $PWD }
+
 try {
     $r = Invoke-BuildIfRequired -SourceDir $PWD\src -AssemblyName MyApp -ThisVersion 1.2.3.6 -OutPath .\out -Quiet
     & $r.Executable.FullName
