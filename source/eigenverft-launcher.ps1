@@ -1,4 +1,3 @@
-. "$PSScriptRoot/scripts/lib.ps1"
 . "$PSScriptRoot/scripts/Out-Log.ps1"
 . "$PSScriptRoot/scripts/Wait-PressKey.ps1"
 . "$PSScriptRoot/scripts/Get-OsName.ps1"
@@ -25,14 +24,5 @@ try {
 }
 catch {
     Out-Log @Logconfig -Level Error -Template "Error: @Messsage: {ExceptionMessage} @Script: {ExceptionScriptName} @Line: {ExceptionLineNumber} @At: {ExceptionLine}" -Params @{ ExceptionMessage = $_.Exception.Message; ExceptionScriptName = $_.InvocationInfo.ScriptName ; ExceptionLineNumber = $_.InvocationInfo.ScriptLineNumber ; ExceptionLine = $_.InvocationInfo.Line.Trim() }
+    Start-Sleep -Milliseconds 3000
 }
-
-Start-Sleep -Milliseconds 500
-#Out-Log @WriteLogInlineDefaultsProgressBar -Level Information -Template "Script execution has started." -InitialWrite
-Start-Sleep -Milliseconds 500
-#Out-Log  @WriteLogInlineDefaultsProgressBar -Level Information -Template "Script execution has started.."
-Start-Sleep -Milliseconds 500
-#Out-Log  @WriteLogInlineDefaultsProgressBar -Level Information -Template "Script execution has started..."
-
-
-Wait-PressKey -Message 'Press any key to continue...'
